@@ -27,8 +27,25 @@ export default class ShoppingList extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
-          products: [{id: 1, name: 'bread'}, {id: 2, name: 'eggs'}]
+          products: [{id: 1, name: 'eggs'}, {id: 2, name: 'bread'}]
       };
+  }
+
+  // function was found on https://www.sitepoint.com/sort-an-array-of-objects-in-javascript/
+  /** Compares two object elements and returns a number either greater than or less than 0 depending
+   *  on which element letter. 
+   */
+  compare(a, b) {
+    const productA = a.name.toLowerCase();
+    const productB = b.name.toLowerCase();
+    
+    let comparison = 0;
+    if (productA > productB) {
+      comparison = 1;
+    } else if (productA < productB) {
+      comparison = -1;
+    }
+    return comparison;
   }
 
     /*** User Actions Handlers ***/
@@ -67,6 +84,7 @@ export default class ShoppingList extends React.Component {
 
   /*** Render ***/
   render() {
+    this.state.products.sort(this.compare);
     return (
       <Container>
        <Content>

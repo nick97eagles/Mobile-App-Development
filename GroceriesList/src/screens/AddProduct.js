@@ -39,6 +39,23 @@ export default class AddProduct extends React.Component {
     };
   }
 
+  // function was found on https://www.sitepoint.com/sort-an-array-of-objects-in-javascript/
+  /** Compares two object elements and returns a number either greater than or less than 0 depending
+   *  on which element letter. 
+   */
+  compare(a, b) {
+    const productA = a.name.toLowerCase();
+    const productB = b.name.toLowerCase();
+    
+    let comparison = 0;
+    if (productA > productB) {
+      comparison = 1;
+    } else if (productA < productB) {
+      comparison = -1;
+    }
+    return comparison;
+  }
+
   async componentWillMount() {
     const savedProducts = await AsyncStorage.getItem('@allProducts');
     if(savedProducts){
@@ -47,7 +64,9 @@ export default class AddProduct extends React.Component {
       });
     }
     this.setState({
-      productsInList: this.props.navigation.state.params.productsInList
+      productsInList: this.props.navigation.state.params.productsInList,
+      // takes all the products upon screen load and sorts them
+      allProducts: this.state.allProducts.sort(this.compare)
     });
   }
 
@@ -107,9 +126,10 @@ export default class AddProduct extends React.Component {
     );
   }
 
-
   /*** Render ***/
   render() {
+    // this makes sure that when a new product is added the screen will reload in the right order.
+    this.state.allProducts.sort(this.compare)
     return (
       <Container>
         <Content>
@@ -138,14 +158,15 @@ export default class AddProduct extends React.Component {
                         {'Already in shopping list'}
                       </Text>}
                   </Body>
-                  <Right>
-                    <Icon
-                      ios="ios-remove-circle"
-                      android="md-remove-circle"
-                      style={{ color: 'red' }}
-                        onPress={this._handleRemovePress.bind(this,product)}
-                    />
-                  </Right>
+                  {!productsInList && 
+                    <Right>
+                        <Icon
+                            ios="ios-remove-circle"
+                            android="md-remove-circle"
+                            style={{ color: 'red' }}
+                              onPress={this._handleRemovePress.bind(this,product)}    
+                        />
+                    </Right>}
                 </ListItem>
               );
             })}
