@@ -1,15 +1,27 @@
 /**
- * 6. src/screens/FeedDetail.js
+ * 8. src/screens/FeedDetail.js
  */
 
 import React from 'react';
 import { ActivityIndicator } from 'react-native';
-import { fetchFeed, selectEntry } from '../actions';
-import { Container, Content, List, ListItem, Text } from 'native-base';
+import { fetchFeed, selectEntry, removeFeed } from '../actions';
+import { Container, Content, List, ListItem, Text, Button, Icon } from 'native-base';
+import { observer } from 'mobx-react';
 
 export default class FeedDetail extends React.Component {
   static navigationOptions = props => ({
     title: props.screenProps.store.selectedFeed.title,
+    headerRight: (
+      <Button
+        transparent
+        onPress={() => {
+          removeFeed(props.navigation.state.params.feedUrl);
+          props.navigation.goBack();
+        }}
+      >
+        <Icon name="trash" />
+      </Button>
+    )
   })
 
   constructor (props) {

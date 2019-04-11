@@ -23,3 +23,11 @@ export function selectEntry(entry) {
 export function selectFeed(feed) {
   store.selectFeed(feed);
 }
+
+export function addFeed(url, feed) {
+  store.addFeed(url, feed);
+}
+
+export function removeFeed(url) {
+  store.removeFeed(url);
+}

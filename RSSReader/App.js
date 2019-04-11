@@ -8,6 +8,7 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import FeedsList from './src/screens/FeedsList.js';
 import FeedDetail from './src/screens/FeedDetail.js';
 import EntryDetail from './src/screens/EntryDetail.js';
+import AddFeed from './src/screens/AddFeed.js';
 
 import store from './src/store'
 
@@ -15,6 +16,7 @@ const AppNavigator = createStackNavigator({
   FeedsList: { screen: FeedsList },
   FeedDetail: { screen: FeedDetail },
   EntryDetail: { screen: EntryDetail },
+  AddFeed: { screen: AddFeed },
 });
 
 const AppContainer = createAppContainer(AppNavigator);
