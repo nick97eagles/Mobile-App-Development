@@ -4,6 +4,7 @@
 
 import store from './store';
 import xml2json from 'simple-xml2json';
+import { Alert } from 'react-native'
 
 export async function fetchFeed(url) {
   const response = await fetch(url);
@@ -12,7 +13,7 @@ export async function fetchFeed(url) {
   return {
     entry: (json.feed && json.feed.entry) || (json.rss && json.rss.channel.item),
     title: (json.feed && json.feed.title) || (json.rss && json.rss.channel.title),
-    updated: (json.feed && json.feed.updated) || null
+    updated: (json.feed && json.feed.updated) || null,
   }
 }
 

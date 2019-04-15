@@ -21,16 +21,28 @@ export default class AddFeed extends React.Component {
   }
 
   _handleAddPress() {
+
+    /**
+     * checks to make sure url has http:// infront 
+     * code snippet taken from https://stackoverflow.com/questions/3543187/prepending-http-to-a-url-that-doesnt-already-contain-http
+     */
+    if(!this.state.url.match(/^[a-zA-Z]+:\/\//)){
+      this.state.url = 'http://' + this.state.url;
+    }
+    // console.log(this.state.url);
+
     if(this.state.url.length > 0) {
       this.setState({ loading: true });
       fetchFeed(this.state.url)
         .then((feed)=>{
-          addFeed(this.state.url, feed);
-          this.setState({ loading: false });
-          this.props.navigation.goBack();
+            addFeed(this.state.url, feed);
+            this.setState({ loading: false });
+            this.props.navigation.goBack();
+            
         })
-        .catch((error)=>{
-          Alert.alert("RSS feed not found: " + error.toString());
+        .catch((err)=>{
+          // added more information about error
+          alert('ERROR:' + err.message + '. URL issue. Please try again or check URL validity');
           this.setState({ loading: false });
         });
     }
