@@ -46,7 +46,7 @@ export default class App extends React.Component<Props> {
     if(this.timeoutId) clearTimeout(this.timeoutId);
     console.log(region);
     const self = this;
-    this.timeoutId = setTimeout(async function() {
+    this.timeoutId = setTimeout(async () => {
       try {
         const point = { lat: region.latitude, lng: region.longitude };
         const positions = await GeoCoder.geocodePosition(point);
