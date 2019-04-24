@@ -66,14 +66,12 @@ export default class App extends React.Component<Props> {
     }
   }
 
-  _newEvent = () => {
+  _onRegionChange = () => {
     this.setState({ position: null });
     if(this.timeoutId) clearTimeout(this.timeoutId);
   }
 
-  _onRegionChange = (region) => {
-    this._newEvent
-    
+  _onRegionChangeComplete = (region) => {
     const self = this;
     this.timeoutId = setTimeout(async function() {
       try {
@@ -99,7 +97,8 @@ export default class App extends React.Component<Props> {
         <MapView
         style={styles.fullScreenMap}
         initialRegion={ this.hometown }
-        onRegionChangeComplete={ this._onRegionChange }
+        _onRegionChange={ this._onRegionChange }
+        _onRegionChangeComplete={ this._onRegionChangeComplete }
          >
          {this.state.carLocations.map((carLocation, i) => (
            <MapView.Marker
