@@ -1,49 +1,45 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
+/*
+ * 2. App.js
  */
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import React, { Component } from 'react';
+import { Platform } from 'react-native';
+import { 
+  createBottomTabNavigator, 
+  createDrawerNavigator, 
+  createAppContainer 
+} from 'react-navigation';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+import Camera     from "./src/screens/Camera"
+import ImagesList from "./src/screens/ImagesList"
+import MyImages   from "./src/screens/MyImages"
 
-type Props = {};
-export default class App extends Component<Props> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-      </View>
-    );
-  }
+const screens = {
+  ImagesList: { screen: ImagesList },
+  MyImages:   { screen: MyImages   },
+  Camera:     { screen: Camera     }
+};
+let Stack;
+if(Platform.OS === 'ios') {
+  const options = {
+    tabBarOptions: {
+      inactiveTintColor: '#aaa',
+      activeTintColor:   '#000',
+      showLabel: 	 false
+    }
+  };
+  Stack = createBottomTabNavigator(screens, options);
+} else {
+  Stack = createDrawerNavigator(screens);
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+const Navigator = createAppContainer(Stack);
+
+type Props = {};
+export default class App extends React.Component<Props> {
+  render() {
+    return (
+      <Navigator/>
+    )
+  }
+}
