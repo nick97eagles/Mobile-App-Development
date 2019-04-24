@@ -1,20 +1,22 @@
 /*
- * 2. src/screens/MyImages.js
+ * 4. src/screens/MyImages.js
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { Icon } from 'native-base';
 
 import Header from '../components/Header';
+import ImagesGrid from '../components/ImagesGrid';
+import api from '../api';    // importing a directory gives us index.js
 
 type Props = {};
 export default class MyImages extends Component<Props> {
   static navigationOptions = {
     drawerLabel: 'My Images',
     tabBarIcon: ({ tintColor }) => (
-      <Icon name='person' style={{fontSize: 40, color: tintColor}} />
-    ),
+      <Icon name='person' style={{fontSize: 40, color: tintColor}}/>
+    )
   };
 
   render() {
@@ -28,16 +30,16 @@ export default class MyImages extends Component<Props> {
             this.props.navigation.navigate('Camera');
           }}
         />
-        <Text style={styles.title}>MyImages</Text>
+        { /* remove <Text> element */ }
+        <ScrollView>
+          <ImagesGrid 
+            fetchImages={ api.fetchImages } 
+            user='Gabriela'
+          />
+        </ScrollView>
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-});
+// remove styles
