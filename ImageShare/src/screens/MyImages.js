@@ -34,7 +34,7 @@ export default class MyImages extends Component<Props> {
         <ScrollView>
           <ImagesGrid 
             fetchImages={ api.fetchImages } 
-            user='Gabriela'
+            user='Branson'
           />
         </ScrollView>
       </View>
