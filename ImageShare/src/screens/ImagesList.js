@@ -1,23 +1,33 @@
 /*
- * 3. src/screens/ImagesList.js
+ * 6. src/screens/ImagesList.js
+ *
+ * props: fetchImages(), navigation, images, fetchingImages 
  */
 
 import React, { Component } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Icon } from 'native-base';
 
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as Actions from '../actions';
+
 import Header from '../components/Header';
 import Gallery from '../components/Gallery';
 import api from '../api';    // importing a directory looks for 'index.js' 
 
 type Props = {};
-export default class ImagesList extends Component<Props> {
+class ImagesList extends Component<Props> {
   static navigationOptions = {
     drawerLabel: 'All Images',
     tabBarIcon: ({ tintColor }) => (
       <Icon name='list' style={{ fontSize: 40, color: tintColor }}/>
     ),
   };
+
+  componentWillMount() {
+    this.props.fetchImages();
+  }
 
   render() {
     return (
@@ -33,7 +43,8 @@ export default class ImagesList extends Component<Props> {
         { /* remove <Text> element */ }
         <ScrollView>
           <Gallery 
-            fetchImages={ api.fetchImages }
+            imageList={ this.props.images }
+            loading={ this.props.fetchingImages }
           />
         </ScrollView>
       </View>
@@ -41,4 +52,15 @@ export default class ImagesList extends Component<Props> {
   }
 }
 
-/* remove styles */
+function mapStateToProps(state) { 
+  return { 
+    images: state.imagesReducer.images, 
+    addingImage: state.imagesReducer.addingImage, 
+    fetchingImages: state.imagesReducer.fetchingImages 
+  } 
+}
+function mapStateActionsToProps(dispatch) { 
+  return bindActionCreators(Actions, dispatch) 
+}
+
+export default connect(mapStateToProps, mapStateActionsToProps)(ImagesList);

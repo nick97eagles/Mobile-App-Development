@@ -1,5 +1,5 @@
 /*
- * 3. src/components/Gallery.js
+ * 6. src/components/Gallery.js
  *
  * props: fetchImages
  *
@@ -16,16 +16,7 @@ import {
 var { height, width } = Dimensions.get('window');
 
 export default class Gallery extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { };
-  }
-
-  componentDidMount() {
-    this.props.fetchImages()
-    .then(images => this.setState({ images }));
-  }
-
+  // remove constructor() and componentDidMount() 
 
   _share(image) {
     Share.share({ 
@@ -39,7 +30,7 @@ export default class Gallery extends React.Component {
       <View>
         <List style={{margin: -15}}>
           {
-            this.state.images && this.state.images.map((image) => {
+            this.props.imageList && this.props.imageList.map((image) => {
               return (
                 <ListItem 
                   key={ image.id } 
@@ -70,7 +61,7 @@ export default class Gallery extends React.Component {
           }
         </List>
         {
-          !this.state.images &&
+          this.props.loading &&
           <View style={ styles.spinnerContainer }>
             <ActivityIndicator/>
           </View>

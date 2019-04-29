@@ -1,5 +1,5 @@
 /*
- * 2. App.js
+ * 6. App.js
  */
 
 import React, { Component } from 'react';
@@ -9,6 +9,11 @@ import {
   createDrawerNavigator, 
   createAppContainer 
 } from 'react-navigation';
+
+import { Provider } from 'react-redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import imagesReducer from './src/reducers/images';
 
 import Camera     from "./src/screens/Camera"
 import ImagesList from "./src/screens/ImagesList"
@@ -35,11 +40,15 @@ if(Platform.OS === 'ios') {
 
 const Navigator = createAppContainer(Stack);
 
+let store = createStore(combineReducers({ imagesReducer }), applyMiddleware(thunk));
+
 type Props = {};
 export default class App extends React.Component<Props> {
   render() {
     return (
-      <Navigator/>
+      <Provider store={store}>
+        <Navigator/>
+      </Provider>
     )
   }
 }
