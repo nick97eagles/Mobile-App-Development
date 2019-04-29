@@ -6,18 +6,26 @@ import React, { Component } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Icon } from 'native-base';
 
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as Actions from '../actions';
+
 import Header from '../components/Header';
 import ImagesGrid from '../components/ImagesGrid';
 import api from '../api';    // importing a directory gives us index.js
 
 type Props = {};
-export default class MyImages extends Component<Props> {
+class MyImages extends Component<Props> {
   static navigationOptions = {
     drawerLabel: 'My Images',
     tabBarIcon: ({ tintColor }) => (
-      <Icon name='person' style={{fontSize: 40, color: tintColor}}/>
+       <Icon name='person' style={{fontSize: 40, color: tintColor}}/>
     )
   };
+
+  componentWillMount() {
+    this.props.fetchImages();
+  }
 
   render() {
     return (
@@ -33,7 +41,8 @@ export default class MyImages extends Component<Props> {
         { /* remove <Text> element */ }
         <ScrollView>
           <ImagesGrid 
-            fetchImages={ api.fetchImages } 
+            imageList={ this.props.images }
+            loading={ this.props.fetchingImages } 
             user='Branson'
           />
         </ScrollView>
@@ -42,4 +51,15 @@ export default class MyImages extends Component<Props> {
   }
 }
 
-// remove styles
+function mapStateToProps(state) { 
+  return { 
+    images: state.imagesReducer.images, 
+    addingImage: state.imagesReducer.addingImage, 
+    fetchingImages: state.imagesReducer.fetchingImages 
+  } 
+}
+function mapStateActionsToProps(dispatch) { 
+  return bindActionCreators(Actions, dispatch) 
+}
+
+export default connect(mapStateToProps, mapStateActionsToProps)(MyImages);

@@ -19,35 +19,26 @@ import {
 var {height, width} = Dimensions.get('window');
 
 export default class ImagesGrid extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { };
-  }
-
-  componentDidMount() {
-    this.props.fetchImages(this.props.user)
-    .then(images => this.setState({ images }));
-  }
+  // remove constructor() and componentDidMount()
 
   render() {
     return (
       <View>
         <View style={styles.imageContainer}>
           {
-            this.state.images && 
-            this.state.images.map(img => {
+            this.props.imageList && this.props.imageList.map((image) => {
               return (
                 <Image 
                   style={styles.image} 
-                  key={img.id} 
-                  source={{uri: img.src}}
+                  key={image.id} 
+                  source={{uri: image.src}}
                 />
               );
             })
           }
         </View>
         {
-          !this.state.images &&
+          this.props.loading &&
           <View style={ styles.spinnerContainer }>
             <ActivityIndicator/>
           </View>
