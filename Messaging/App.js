@@ -1,5 +1,5 @@
 /*
- * 2. App.js
+ * 3. App.js
  */
 
 import React from 'react';
@@ -9,11 +9,13 @@ import {
   createDrawerNavigator,
   createAppContainer
 } from 'react-navigation';
+import { Provider, observer, inject } from 'mobx-react';
 
 import Login from './src/screens/Login';
 import Chats from './src/screens/Chats';
 import Search from './src/screens/Search';
 import Profile from './src/screens/Profile';
+import { users, chats } from './src/stores';
 
 const screens = {
     Chats:   { screen: Chats   },
@@ -37,8 +39,24 @@ if(Platform.OS === 'ios') {
 const Navigator = createAppContainer(Stack);
 
 type Props = {};
+@inject('users', 'chats')
+@observer
+class MessagingApp extends React.Component<Props> {
+  render() {
+    if(this.props.users.isLoggedIn) {
+      return <Navigator/>
+    } else {
+      return <Login/>
+    }
+  }
+}
+
 export default class App extends React.Component<Props> {
   render() {
-    return <Navigator/>
+    return (
+      <Provider users={users} chats={chats}>
+        <MessagingApp/>
+      </Provider>
+    )
   }
 }
