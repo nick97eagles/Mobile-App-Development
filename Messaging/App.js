@@ -1,52 +1,62 @@
 /*
- * 2. src/screens/Search.js
+ * 3. App.js
  */
 
-import React, { PropTypes } from 'react';
-import { View, TextInput, Button, FlatList } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React from 'react';
+import { Platform, View } from 'react-native';
+import {
+  createBottomTabNavigator,
+  createDrawerNavigator,
+  createAppContainer
+} from 'react-navigation';
+import { Provider, observer, inject } from 'mobx-react';
 
-class Search extends React.Component {
-  imgPlaceholder = 'https://cdn.pixabay.com/photo/2017/03/21/02/00/user-2160923_960_720.png';
+import Login from './src/screens/Login';
+import Chats from './src/screens/Chats';
+import Search from './src/screens/Search';
+import Profile from './src/screens/Profile';
+import { users } from './src/stores';
 
-  state = {
-    name: '',
-    foundUsers: null
-  }
-
-  static navigationOptions = {
-    tabBarLabel: 'Search',
-    tabBarIcon: ({ tintColor }) => (
-      <Icon name="search" size={30} color={tintColor}/>
-    )
+const screens = {
+    Chats:   { screen: Chats   },
+    Search:  { screen: Search  },
+    Profile: { screen: Profile }
+};
+let Stack;
+if(Platform.OS === 'ios') {
+  const options = {
+    tabBarOptions: {
+      inactiveTintColor: '#aaa',
+      activeTintColor:   '#000',
+      showLabel: 	 true
+    }
   };
+  Stack = createBottomTabNavigator(screens, options);
+} else {
+  Stack = createDrawerNavigator(screens);
+}
 
-  onPressSearch() {
-    console.log(this.state.name);
-  }
+const Navigator = createAppContainer(Stack);
 
-  render () {
-    return (
-      <View>
-        <View style={{padding: 20, marginTop: 20, backgroundColor: '#eee'}}>
-          <View style={{backgroundColor: 'white', padding: 15, borderRadius: 10}}>
-            <TextInput
-              style={{borderColor: 'gray', borderBottomWidth: 1, height: 40}}
-              onChangeText={(name) => this.setState({name})}
-              value={this.state.name}
-              placeholder='Name of user'
-            />
-            <Button
-              onPress={this.onPressSearch.bind(this)}
-              title='Search'
-            />
-          </View>
-        </View>
-        {
-        }
-      </View>
-    )
+type Props = {};
+@inject('users')
+@observer
+class MessagingApp extends React.Component<Props> {
+  render() {
+    if(this.props.users.isLoggedIn) {
+      return <Navigator/>
+    } else {
+      return <Login/>
+    }
   }
 }
 
-export default Search;
+export default class App extends React.Component<Props> {
+  render() {
+    return (
+      <Provider users={users}>
+        <MessagingApp/>
+      </Provider>
+    )
+  }
+}

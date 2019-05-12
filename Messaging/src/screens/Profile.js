@@ -1,11 +1,13 @@
 /*
- * 3. src/screens/Profile.js
+ * 4. src/screens/Profile.js
  */
 
 import React, { PropTypes } from 'react';
 import { View, Image, Button, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { observer, inject } from 'mobx-react';
+
+import notifications from '../notifications';
 
 @inject('users') 
 @observer
@@ -25,29 +27,30 @@ class Profile extends React.Component {
 
   render () {
     return (
-        <View style={{ padding: 20 }}>
-          {
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Image
-                  source={{uri: (this.props.users && this.props.users.avatar || this.imgPlaceholder)}}
-                  style={{
-                    width: 100, 
-                    height: 100, 
-                    borderRadius: 50, 
-                    margin: 20, 
-                    resizeMode: 'cover'
-                  }}
-                />
-                <Text style={{fontSize: 25}}>{
-                  this.props.users.name
-                }</Text>
-              </View>
-          }
-          <Button
-            onPress={this.onPressLogout.bind(this)}
-            title="Logout"
-          />
-        </View>
+      <View style={{ padding: 20 }}>
+        {
+          this.props.users && this.props.users.name &&  
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Image
+              source={{uri: (this.props.users.avatar || this.imgPlaceholder)}}
+              style={{
+                width: 100, 
+                height: 100, 
+                borderRadius: 50, 
+                margin: 20, 
+                resizeMode: 'cover'
+              }}
+            />
+            <Text style={{fontSize: 25}}>{
+              this.props.users.name
+            }</Text>
+          </View>
+        }
+        <Button
+          onPress={this.onPressLogout.bind(this)}
+          title="Logout"
+        />
+      </View>
     )
   }
 }
