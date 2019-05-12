@@ -1,44 +1,52 @@
 /*
- * 2. App.js
+ * 2. src/screens/Search.js
  */
 
-import React from 'react';
-import { Platform, View } from 'react-native';
-import {
-  createBottomTabNavigator,
-  createDrawerNavigator,
-  createAppContainer
-} from 'react-navigation';
+import React, { PropTypes } from 'react';
+import { View, TextInput, Button, FlatList } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-import Login from './src/screens/Login';
-import Chats from './src/screens/Chats';
-import Search from './src/screens/Search';
-import Profile from './src/screens/Profile';
+class Search extends React.Component {
+  imgPlaceholder = 'https://cdn.pixabay.com/photo/2017/03/21/02/00/user-2160923_960_720.png';
 
-const screens = {
-    Chats:   { screen: Chats   },
-    Search:  { screen: Search  },
-    Profile: { screen: Profile }
-};
-let Stack;
-if(Platform.OS === 'ios') {
-  const options = {
-    tabBarOptions: {
-      inactiveTintColor: '#aaa',
-      activeTintColor:   '#000',
-      showLabel: 	 true
-    }
+  state = {
+    name: '',
+    foundUsers: null
+  }
+
+  static navigationOptions = {
+    tabBarLabel: 'Search',
+    tabBarIcon: ({ tintColor }) => (
+      <Icon name="search" size={30} color={tintColor}/>
+    )
   };
-  Stack = createBottomTabNavigator(screens, options);
-} else {
-  Stack = createDrawerNavigator(screens);
-}
 
-const Navigator = createAppContainer(Stack);
+  onPressSearch() {
+    console.log(this.state.name);
+  }
 
-type Props = {};
-export default class App extends React.Component<Props> {
-  render() {
-    return <Navigator/>
+  render () {
+    return (
+      <View>
+        <View style={{padding: 20, marginTop: 20, backgroundColor: '#eee'}}>
+          <View style={{backgroundColor: 'white', padding: 15, borderRadius: 10}}>
+            <TextInput
+              style={{borderColor: 'gray', borderBottomWidth: 1, height: 40}}
+              onChangeText={(name) => this.setState({name})}
+              value={this.state.name}
+              placeholder='Name of user'
+            />
+            <Button
+              onPress={this.onPressSearch.bind(this)}
+              title='Search'
+            />
+          </View>
+        </View>
+        {
+        }
+      </View>
+    )
   }
 }
+
+export default Search;
