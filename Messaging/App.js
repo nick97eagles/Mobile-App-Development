@@ -1,5 +1,5 @@
 /*
- * 3. App.js
+ * 5. App.js
  */
 
 import React from 'react';
@@ -15,7 +15,7 @@ import Login from './src/screens/Login';
 import Chats from './src/screens/Chats';
 import Search from './src/screens/Search';
 import Profile from './src/screens/Profile';
-import { users } from './src/stores';
+import { users, chats } from './src/stores';
 
 const screens = {
     Chats:   { screen: Chats   },
@@ -39,7 +39,7 @@ if(Platform.OS === 'ios') {
 const Navigator = createAppContainer(Stack);
 
 type Props = {};
-@inject('users')
+@inject('users', 'chats')
 @observer
 class MessagingApp extends React.Component<Props> {
   render() {
@@ -54,7 +54,7 @@ class MessagingApp extends React.Component<Props> {
 export default class App extends React.Component<Props> {
   render() {
     return (
-      <Provider users={users}>
+      <Provider users={users} chats={chats}>
         <MessagingApp/>
       </Provider>
     )

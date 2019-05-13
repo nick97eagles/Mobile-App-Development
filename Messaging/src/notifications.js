@@ -13,7 +13,7 @@ import FCM, {
 let notificationListener = null;
 let refreshTokenListener = null;
 const API_URL = 'https://fcm.googleapis.com/fcm/send';
-const FirebaseServerKey = 'AIzaSyCZAvrUCAJQKL7jrQy4iNFk6ML7QCerXys';
+const FirebaseServerKey = 'AAAADeeSeqE:APA91bHtFHBYqfUA_1hS9PJxaAIpXwFT81COQdyeVvK7UuxtWcs_m0m077PPyaD-Shi_S4Pm0cx5BeuZSm1ZbxVwZlS-Fug1GCSBp19wobBn07wdLDZg5-UCixrgre8PZ15T069sPqhN';
 
 const init = (cb) => {
   FCM.requestPermissions();

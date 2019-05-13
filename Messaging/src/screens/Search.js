@@ -1,5 +1,5 @@
 /*
- * 3. src/screens/Search.js
+ * 5. src/screens/Search.js
  */
 
 import React, { PropTypes } from 'react';
@@ -9,7 +9,7 @@ import { observer, inject } from 'mobx-react';
 
 import ListItem from '../components/ListItem';
 
-@inject('users') 
+@inject('users', 'chats') 
 @observer
 class Search extends React.Component {
   imgPlaceholder = 'https://cdn.pixabay.com/photo/2017/03/21/02/00/user-2160923_960_720.png';
@@ -38,10 +38,12 @@ class Search extends React.Component {
       id: this.props.users.id,
       name: this.props.users.name,
       avatar: this.props.users.avatar || this.imgPlaceholder,
+      notificationsToken: this.props.users.notificationsToken || ''
     }, {
       id: user.id,
       name: user.name,
       avatar: user.avatar || this.imgPlaceholder,
+      notificationsToken: user.notificationsToken || ''
     });
 
     this.props.navigation.navigate('Chats', {});
@@ -66,15 +68,15 @@ class Search extends React.Component {
         </View>
         {
           this.state.foundUsers &&
-          <Flatlist 
+          <FlatList 
             data={this.state.foundUsers}
-            keyExtractor={(item, index) => index}
+            keyExtractor={(item, index) => index.toString()}
             renderItem={({item}) => {
               return (
-                <Listitem 
+                <ListItem 
                   text={item.name} 
                   image={item.avatar || this.imgplaceholder}
-                  onpress={this.onPressUser.bind(this, item)}
+                  onPress={this.onPressUser.bind(this, item)}
                 />
               )
             }}

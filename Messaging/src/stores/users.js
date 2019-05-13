@@ -1,8 +1,9 @@
 /*
- * 4. src/stores/users.js
+ * 5. src/stores/users.js
  */
 
 import {observable, computed, map, toJS, action} from 'mobx';
+import chats from './chats'
 import firebase from 'firebase';
 import { firebaseApp } from '../firebase';
 import notifications from '../notifications';
@@ -49,12 +50,12 @@ class Users {
     this.registering = true;
     this.registeringError = null;
     firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then((user) => {
+    .then((credential) => {
       this.registering = false;
       notifications.init((notificationsToken) => {
         this.setNotificationsToken(notificationsToken);
       });
-      firebaseApp.database().ref('/users/' + user.uid).set({
+      firebaseApp.database().ref('/users/' + credential.user.uid).set({
         name: name
       });
     })
@@ -71,11 +72,25 @@ class Users {
       notificationsToken: token
     });
   }
-  
+
   searchUsers(name) {
-    console.log(name);
     return new Promise(function(resolve) {
-      // TODO
+      firebaseApp.database().ref('/users/').once('value')
+      .then(function(snapshot) {
+        let foundUsers = [];
+        const users = snapshot.val();
+        for(var id in users) {
+          if(users[id].name === name) {
+            foundUsers.push({
+              name: users[id].name,
+              avatar: users[id].avatar,
+              notificationsToken: users[id].notificationsToken,
+              id
+            });
+          }
+        }
+        resolve(foundUsers);
+      });
     });
   }
 
@@ -85,13 +100,14 @@ class Users {
 
   bindToFirebase() {
     return firebase.auth().onAuthStateChanged((user) => {
+      if(this.chatsBind && typeof this.chatsBind.off === 'function') this.chatsBind.off();
       if(this.userBind && typeof this.userBind.off === 'function') this.userBind.off();
 
       if (user) {
         this.id = user.uid;
         this.isLoggedIn = true;
-        this.userBind = firebaseApp.database()
-        .ref('/users/' + this.id).on('value', (snapshot) => {
+        this.chatsBind = chats.bindToFirebase(user.uid);
+        this.userBind = firebaseApp.database().ref('/users/' + this.id).on('value', (snapshot) => {
           const userObj = snapshot.val();
           if(!userObj) return;
           this.name = userObj.name;

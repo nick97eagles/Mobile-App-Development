@@ -8,7 +8,7 @@
 import firebase from 'firebase';
 
 var firebaseConfig = {
-  apiKey: "AIzaSyD0WIAWXjwId-5HL2ha8CaFWc5YU5oQsFk",
+  apiKey: "AIzaSyCZAvrUCAJQKL7jrQy4iNFk6ML7QCerXys",
   authDomain: "messaging-bea39.firebaseapp.com",
   databaseURL: "https://messaging-bea39.firebaseio.com",
   projectId: "messaging-bea39",

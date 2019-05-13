@@ -1,9 +1,10 @@
 /*
- * 3. src/stores/index.js
+ * 5. src/stores/index.js
  */
 
 import users from './users';
+import chats from './chats';
 
 export {
-  users,
+  users, chats
 };
