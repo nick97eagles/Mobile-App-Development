@@ -39,6 +39,7 @@ class Users {
     notifications.unbind();
     this.setNotificationsToken('');
     firebase.auth().signOut();
+    chats.logout();
   }
 
   @action register = function(email, password, name) {
@@ -74,13 +75,14 @@ class Users {
   }
 
   searchUsers(name) {
+    modName = name.toLowerCase();
     return new Promise(function(resolve) {
       firebaseApp.database().ref('/users/').once('value')
       .then(function(snapshot) {
         let foundUsers = [];
         const users = snapshot.val();
         for(var id in users) {
-          if(users[id].name === name) {
+          if(users[id].name.toLowerCase().includes(modName)) {
             foundUsers.push({
               name: users[id].name,
               avatar: users[id].avatar,
@@ -90,6 +92,9 @@ class Users {
           }
         }
         resolve(foundUsers);
+      })
+      .catch((error) => {
+        console.log(error)
       });
     });
   }

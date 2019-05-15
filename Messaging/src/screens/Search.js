@@ -30,6 +30,9 @@ class Search extends React.Component {
     this.props.users.searchUsers(this.state.name)
     .then((foundUsers) => {
       this.setState({ foundUsers });
+    })
+    .catch((error) => {
+      console.log(error)
     });
   }
 

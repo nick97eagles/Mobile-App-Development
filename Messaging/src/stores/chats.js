@@ -42,6 +42,9 @@ class Chats {
           image: message.user.image,
           chatId
         });
+      })
+      .catch((error) => {
+        console.log(error)
       });
     });
 
@@ -84,9 +87,32 @@ class Chats {
         }).then(() => {
           resolve();
         })
+        .catch((error) => {
+          console.log(error)
+        });
       })
+      .catch((error) => {
+        console.log(error)
+      });
     });
   }
+
+  @action logout = function() {
+    firebaseApp.database().ref('/chats/' + userId).off('value', (snapshot) => {
+      this.downloadingChats = false;
+      const chatsObj = snapshot.val();
+      this.list = [];
+      for(var id in chatsObj) {
+        this.list.push({
+          id,
+          name: chatsObj[id].name,
+          image: chatsObj[id].image,
+          contactId: chatsObj[id].contactId
+        });
+      }
+    });
+  }
+
 
   bindToFirebase(userId) {
     this.downloadingChats = true;

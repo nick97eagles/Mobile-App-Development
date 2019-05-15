@@ -19,12 +19,18 @@ const init = (cb) => {
   FCM.requestPermissions();
   FCM.getFCMToken().then(token => {
     cb(token)
+  })
+  .catch((error) => {
+    console.log(error)
   });
   refreshTokenListener = FCM.on(FCMEvent.RefreshToken, (token) => {
     cb(token);
   });
   FCM.getInitialNotification().then(notif => {
     console.log("INITIAL NOTIFICATION", notif)
+  })
+  .catch((error) => {
+    console.log(error)
   });
 }
 
