@@ -19,19 +19,19 @@ export const sprites = [
     type: "rockUp",
     position: { x: 110, y: 0 },
     velocity: { x: -1, y: 0 },
-    size: { width: 15, height: heightOfRockUp }
+    size: { width: 12, height: heightOfRockUp }
   },
   { // 2
     type: "rockDown",
     position: { x: 110, y: heightOfRockUp + 30 },
     velocity: { x: -1, y: 0 },
-    size: { width: 15, height: heightOfRockDown }
+    size: { width: 12, height: heightOfRockDown }
   },
   { // 3
     type: "gap",
     position: { x: 110, y: heightOfRockUp },
     velocity: { x: -1, y: 0 },
-    size: { width: 15, height: 30 }
+    size: { width: 25, height: 30 }
   },
   { // 4
     type: "ground",
@@ -49,7 +49,7 @@ export const sprites = [
 
 function prepareNewRockSizes() {
   heightOfRockUp = 10 + Math.floor(Math.random() * 40);
-  heightOfRockDown = 50 - heightOfRockUp;
+  heightOfRockDown = 10 + Math.floor(Math.random() * 30);
   heightOfGap = 30;
 }
 

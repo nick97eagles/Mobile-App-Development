@@ -11,7 +11,7 @@ export default class GameOver extends Component {
       <Image
         style={{
           position: "absolute",
-          left: 15 * W,
+          left: 22 * W,
           top: 30 * H
         }}
         resizeMode="stretch"

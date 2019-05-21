@@ -16,6 +16,9 @@ import Start from "./Start";
 import StartAgain from "./StartAgain";
 import GameOver from "./GameOver";
 
+import sound from "react-native-sound";
+const music = new sound("bgm.mp3", sound.MAIN_BUNDLE);
+
 class Game extends Component {
   constructor() {
     super();
@@ -38,6 +41,7 @@ class Game extends Component {
     this.time = new Date();
     this.setState({ gameOver: false });
     this.animationFrameId = requestAnimationFrame(this.nextFrame.bind(this));
+    music.play();
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -74,7 +78,7 @@ class Game extends Component {
         activeOpacity={1}
       >
         <Image
-          source={require("../../images/bg.png")}
+          source={require("../../images/bg2.png")}
           style={[styles.screen, styles.image]}
         />
         <RockUp
